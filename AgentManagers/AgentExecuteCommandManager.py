@@ -1,10 +1,13 @@
 import subprocess
 
 def execute_command(command):    
-    message = subprocess.run(command.split(" "))
-    print(message)
+    message = subprocess.check_output(command.split(" "))
+    return str(message).lstrip("b'").rstrip("'").replace("\\n", '\n')
 
 def get_configuration():
-    print()
+    message = subprocess.check_output(['ifconfig','-a'])
+    message += (subprocess.check_output(['cat','/etc/network/interfaces']))
+    message += (subprocess.check_output(['cat','/etc/hosts']))
+    return str(message).replace("\\n", '\n')
 #test 
-execute_command('echo siema')
+print(execute_command("echo siema"))
