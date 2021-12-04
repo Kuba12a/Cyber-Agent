@@ -6,6 +6,8 @@ __pycache__/
 # C extensions
 *.so
 
+WinDump.exe
+
 # Distribution / packaging
 .Python
 build/
