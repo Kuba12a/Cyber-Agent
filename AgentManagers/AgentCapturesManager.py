@@ -1,5 +1,6 @@
 from scapy.all import *
 import os
+import time
 
 def process_pcap(interface, timeout, filtr):
     print("Pobieram kaptury tak jak kazesz ziomek")
@@ -7,7 +8,14 @@ def process_pcap(interface, timeout, filtr):
     t.start()
     time.sleep(int(timeout))
     t.stop()
-    return t.results
+    current_time = time.ctime().replace(":","-")
+    current_time=current_time.replace(" ", "_")
+    name = "pcap_" + current_time + ".pcapng"
+    name = os.path.join("Captures", name)
+    f = open(name, 'w')
+    f.write(str(t))
+    f.close()
+    #return t.results
     
     
 
@@ -24,5 +32,9 @@ def get_capture(filename):
 def get_captures_list():
     return os.listdir("Captures")
  
-#test (dziala na sudo)
-#process_pcap("eth0", 10, "tcp").nsummary()
+
+def get_configuration():
+    message = subprocess.check_output(['ifconfig','-a'])
+    message += (subprocess.check_output(['cat','/etc/network/interfaces']))
+    message += (subprocess.check_output(['cat','/etc/hosts']))
+    return str(message).replace("\\n", '\n')

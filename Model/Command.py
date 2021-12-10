@@ -2,11 +2,12 @@ from pydantic import BaseModel
 import datetime
 
 #actions
+
+#get_captures_list = "get_captures_list"
+#get_captures = "get_captures"
+#get_logs_list = "get_logs_list"
+#get_logs = "get_logs"
 get_configuration = "get_configuration"
-get_captures_list = "get_captures_list"
-get_captures = "get_captures"
-get_logs_list = "get_logs_list"
-get_logs = "get_logs"
 capture_traffic = "capture_traffic"
 execute_command = "execute_command"
 
@@ -28,11 +29,20 @@ class Command(BaseModel):
         time: int 
         parameters: str 
 
-        def __init__(self, action, names="", time=30, parameters=""):
-            self.action =action
-            self.names = names
-            self.time = time
-            self.parameters = parameters
+        def __init__(self, action = "n" , names = "n", time=30, parameters="n"):
+            self.__action =action
+            self.__names = names
+            self.__time = time
+            self.__parameters = parameters
 
-        
-        
+
+        def set_action(self, x):
+                self.__action= x
+        def set_time(self, x):
+                self.__time = x
+        def set_parameters(self, x):
+                self.__parameters = x
+        def set_names(self, x):
+                self.__names = x
+
+
