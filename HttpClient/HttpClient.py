@@ -1,16 +1,33 @@
 import requests
-import Model.Command as Command
+from pprint import pprint
+import os
 
 
 
-def send_file(URL, command : Command):
-    with open('report.xls', 'rb') as f:
-        r = requests.post('http://httpbin.org/post', files={'report.xls': f})
+
+#TODO adres managera w jakimś configu
+manager_address = "http://127.0.0.1:8001/uploadFile"
+
+
+
+
+def send_file(filename):   
+    ext = filename.split(".")[1]
     try:
-        response = requests.post('http://httpbin.org/post', files={'report.xls': f})
-        status_code = response.status_code
+        if(ext=="pcapng"):
+            path = os.path.join("Captures", filename)
+            with open(path,'rb') as filedata:
+                r = requests.post(manager_address,  files={'file': filedata})
+            status_code = r.status_code
+            pprint(r.content)
+        elif(ext == "evtx"):
+            path = os.path.join("Logs", filename)
+            with open(path,'rb') as filedata:
+                r = requests.post(manager_address,  files={'file': filedata})
+            status_code = r.status_code
+            pprint(r.content)
     except Exception as ex:
         template = "An exception of type {0} occurred. Arguments:\n{1!r}"
         message = template.format(type(ex).__name__, ex.args)
         print(message)
-    return response.status_code
+    return r.status_code
