@@ -3,8 +3,8 @@ import os
 import time
 
 def process_pcap(interface, timeout, filtr):
-    print("Pobieram kaptury tak jak kazesz ziomek")
-    t = AsyncSniffer(iface=interface, prn=None, store=True, filter=filtr)
+    print("Sniffing network traffic")
+    t = AsyncSniffer(prn=None, store=True, filter=filtr)
     t.start()
     time.sleep(int(timeout))
     t.stop()
@@ -12,9 +12,8 @@ def process_pcap(interface, timeout, filtr):
     current_time=current_time.replace(" ", "_")
     name = "pcap_" + current_time + ".pcapng"
     name = os.path.join("Captures", name)
-    f = open(name, 'w')
-    f.write(str(t))
-    f.close()
+    wrpcap(name, t.results, append=True)
+    print("Sniffing network traffic finished")
     #return t.results
     
     

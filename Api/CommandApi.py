@@ -11,6 +11,7 @@ import AgentManagers.AgentExecuteCommandManager as agent_execution_command_manag
 import HttpClient.HttpClient as http_client
 import os
 import threading
+from fastapi.responses import FileResponse
 
 app = FastAPI()
 
@@ -32,9 +33,11 @@ def login(command: command_model.Command):
 
 
 @app.post("/file")
-def login(name : name_class.Name):
-    http_client.send_file(name.name)
-    return {"msg": "File sent"}
+def get_file(name : name_class.Name):
+    #if filename.endswith(".pcapng"):
+    file_path = os.path.join("Captures", name.name)
+    #http_client.send_file(name.name)
+    return FileResponse(file_path, media_type='application/octet-stream', filename= name.name)
 
 
 @app.get("/filenames/evtx")
