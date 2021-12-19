@@ -19,7 +19,7 @@ app = FastAPI()
 @app.post("/command")
 def login(command: command_model.Command):
     if(command.action== command_model.get_configuration):
-        result = agent_captures_manager.get_configuration
+        result = agent_captures_manager.get_configuration()
         return {"msg" : result}
     elif(command.action== command_model.capture_traffic):
         pcap_thread = threading.Thread(target=agent_captures_manager.process_pcap("eth0",command.time, command.parameters), args=(1,))
